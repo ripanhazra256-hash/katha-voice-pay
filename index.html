@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Katha Voice Pay</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="public/manifest.json" />
+  <meta name="theme-color" content="#4f46e5" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+    }
+    .app {
+      max-width: 420px;
+      margin: auto;
+      padding: 16px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .card {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .balance {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      border-radius: 14px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <h1>🎤 Katha Voice Pay</h1>
+
+    <div class="card">
+      <div>Total Balance</div>
+      <div class="balance">₹ 0</div>
+    </div>
+
+    <div class="card">
+      <div>Last Transaction</div>
+      <div>No records yet</div>
+    </div>
+
+    <button onclick="startVoice()">🎙️ Speak</button>
+  </div>
+
+  <script>
+    function startVoice() {
+      alert("Voice feature coming soon");
+    }
+
+    // ✅ Service Worker Register (PWA)
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then(() => console.log("Service Worker Registered"))
+          .catch(err => console.log("SW error", err));
+      });
+    }
+  </script>
+</body>
+</html>
