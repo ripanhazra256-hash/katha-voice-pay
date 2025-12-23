@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katha Voice Pay</title>
+  <link rel="manifest" href="public/manifest.json">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, Arial, sans-serif;
+      background: #f4f6fb;
+    }
+    .app {
+      max-width: 420px;
+      margin: auto;
+      min-height: 100vh;
+      background: #ffffff;
+      padding: 16px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .card {
+      background: #eef2ff;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    .balance {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    button {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      border-radius: 14px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <h1>🎤 Katha Voice Pay</h1>
+
+    <div class="card">
+      <div>Total Balance</div>
+      <div class="balance">₹ 0</div>
+    </div>
+
+    <div class="card">
+      <div>Last Transaction</div>
+      <div>No records yet</div>
+    </div>
+
+    <button onclick="startVoice()">🎙 Speak to Add Khata</button>
+  </div>
+
+  <script>
+    function startVoice() {
+      alert("Voice feature coming next 🚀");
+    }
+  </script>
+</body>
+</html>
