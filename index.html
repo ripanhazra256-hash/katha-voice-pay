@@ -65,9 +65,54 @@
   </div>
 
   <script>
-    function startVoice() {
-      alert("Voice feature coming soon");
-    }
+let balance = 0;
+
+const balanceEl = document.querySelector(".balance");
+const lastTxEl = document.querySelector(".card:nth-of-type(2) div:last-child");
+
+function updateUI(text, amount) {
+  balance += amount;
+  balanceEl.innerText = "₹ " + balance;
+  lastTxEl.innerText = text;
+}
+
+function startVoice() {
+  if (!("webkitSpeechRecognition" in window)) {
+    alert("Voice not supported");
+    return;
+  }
+
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = "bn-IN";
+  recognition.start();
+
+  recognition.onresult = function (event) {
+    const speech = event.results[0][0].transcript;
+    handleSpeech(speech);
+  };
+}
+
+function handleSpeech(text) {
+  const numbers = text.match(/\d+/);
+  if (!numbers) {
+    alert("টাকার অংক বুঝতে পারিনি");
+    return;
+  }
+
+  const amount = parseInt(numbers[0]);
+
+  if (text.includes("পেলাম") || text.includes("জমা")) {
+    updateUI("পেলাম ₹" + amount, amount);
+  } 
+  else if (text.includes("দিলাম") || text.includes("খরচ")) {
+    updateUI("দিলাম ₹" + amount, -amount);
+  } 
+  else {
+    alert("বলুন: পেলাম / দিলাম");
+  }
+}
+</script>
+  
 
     // ✅ Service Worker Register (PWA)
     if ("serviceWorker" in navigator) {
