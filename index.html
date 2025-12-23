@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Katha Voice Pay</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="public/manifest.json">
+  <meta name="theme-color" content="#1E293B">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+    }
+    .app {
+      max-width: 420px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .card {
+      background: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .balance {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: none;
+      background: #4f46e5;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <h1>🎤 Katha Voice Pay</h1>
+
+    <div class="card">
+      <div>Total Balance</div>
+      <div class="balance">₹ <span id="balance">0</span></div>
+    </div>
+
+    <div class="card">
+      <div>Last Transaction</div>
+      <div id="last">No records yet</div>
+    </div>
+
+    <button onclick="startVoice()">🎙️ Speak</button>
+  </div>
+
+<script>
+  let balance = 0;
+  const balanceEl = document.getElementById("balance");
+  const lastEl = document.getElementById("last");
+
+  function updateUI(text, amount) {
+    balance += amount;
+    balanceEl.innerText = balance;
+    lastEl.innerText = text;
+  }
+
+  function convertBanglaNumber(text) {
+    const map = {
+      '০':'0','১':'1','২':'2','৩':'3','৪':'4',
+      '৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'
+    };
+    return text.replace(/[০-৯]/g, d => map[d]);
+  }
+
+  function startVoice() {
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Voice support নেই");
+      return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "bn-IN";
+    recognition.start();
+
+    recognition.onresult = function(e) {
+      let speech = e.results[0][0].transcript;
+      handleSpeech(speech);
+    };
+  }
+
+  function handleSpeech(text) {
+    text = convertBanglaNumber(text);
+
+    const numbers = text.match(/\d+/);
+    if (!numbers) {
+      alert("টাকার অঙ্ক বুঝতে পারিনি");
+      return;
+    }
+
+    const amount = parseInt(numbers[0]);
+
+    if (text.includes("পেলাম") || text.includes("জমা")) {
+      updateUI("পেলাম ₹" + amount, amount);
+    }
+    else if (text.includes("দিলাম") || text.includes("খরচ")) {
+      updateUI("দিলাম ₹" + amount, -amount);
+    }
+    else {
+      alert("বলুন: ৫০০ টাকা পেলাম / ২০০ টাকা দিলাম");
+    }
+  }
+
+  // PWA Service Worker
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
+
+</body>
+</html>
